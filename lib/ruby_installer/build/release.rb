@@ -38,7 +38,7 @@ class Release
   def tag_version
     rel = release_name.downcase
     $stderr.puts "Tag release #{rel} with annotation:"
-    rt = release_text
+    rt = release_text.gsub(/\A[# ]+/, "")
     $stderr.puts(rt.gsub(/^/, "    "))
     IO.popen(["git", "tag", "--file=-", rel, "--cleanup=whitespace"], "w") do |fd|
       fd.write rt
@@ -61,8 +61,10 @@ class Release
     raise "invalid body of tag #{tag.inspect} #{body.inspect}" if body.to_s.strip.empty?
 
     client = Octokit::Client.new(access_token: ENV['DEPLOY_TOKEN'])
-    $stderr.puts "Create github release #{tag}"
-    release = client.create_release(repo, tag,
+
+    release = client.releases(repo).find{|r| r.tag_name==tag }
+    $stderr.puts "#{ release ? "Add to" : "Create" } github release #{tag}"
+    release ||= client.create_release(repo, tag,
         target_commitish: "master",
         name: headline,
         body: body,
