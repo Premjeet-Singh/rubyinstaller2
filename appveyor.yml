@@ -45,12 +45,15 @@ test_script:
   # Verify that the used CA list is still the latest.
   - rake ssl:update_check
   - IF DEFINED APPVEYOR_REPO_TAG_NAME (
+    echo %APPVEYOR_REPO_TAG_NAME%&
     set DEPLOY_TAG=%APPVEYOR_REPO_TAG_NAME%&
     ridk enable &&
     c:/msys64/usr/bin/mkdir -p /home/appveyor/.gnupg &&
     gpg --passphrase %GPGPASSWD% --decrypt appveyor-key.asc.asc | gpg --import &&
-    gpg --detach-sign --armor appveyor.yml &&
-    rake release:upload -- packages/rubyinstaller/recipes/installer-inno/%DEPLOY_TAG%-$(arch).exe packages/rubyinstaller/recipes/archive-7z/%DEPLOY_TAG%-$(arch).7z )
+    c:/msys64/usr/bin/mkdir artifacts &&
+    cp packages/rubyinstaller/recipes/installer-inno/%DEPLOY_TAG%-%arch%.exe packages/rubyinstaller/recipes/archive-7z/%DEPLOY_TAG%-%arch%.7z artifacts/ &&
+    gpg --detach-sign --armor artifacts/* &&
+    rake release:upload -- artifacts/* )
 
 # Provide the rubyinstaller.exe files for download
 artifacts:
