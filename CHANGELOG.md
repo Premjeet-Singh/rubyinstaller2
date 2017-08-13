@@ -1,3 +1,18 @@
+## RubyInstaller-2.4.1-3test1 - YYYY-MM-DD
+
+### Added
+- Sign published files per PGP signature.
+- Set `LANG` variable in `ridk enable` because some MSYS apps require a valid setting.
+  This also enables message translation of gettext enabled apps.
+
+### Changed
+- Add OS name and version to `ridk version`.
+- Upload signed files directly from Appveyor to Github for releases.
+
+### Removed
+- Remove deprecated `RubyInstaller.add_dll_directory`.
+
+
 ## RubyInstaller-2.4.1-2 - 2017-07-04
 
 ### Added
