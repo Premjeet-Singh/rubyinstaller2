@@ -56,7 +56,7 @@ test_script:
       c:/msys64/usr/bin/mkdir artifacts &&
       cp -v packages/rubyinstaller/recipes/installer-inno/%DEPLOY_TAG%-%arch%.exe packages/rubyinstaller/recipes/archive-7z/%DEPLOY_TAG%-%arch%.7z artifacts/ &&
       ls artifacts/* | xargs -n1 gpg --verbose --detach-sign --armor &&
-      rake release:upload -- artifacts/* ) || ( exit 1 )
+      rake release:upload -- artifacts/* || ( exit 1 ) )
     ) || ( ruby -e "puts 'No release upload'" )
 
 # Provide the rubyinstaller.exe files for download
