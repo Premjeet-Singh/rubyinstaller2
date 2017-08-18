@@ -48,7 +48,7 @@ test_script:
   # Run the Ruby Spec Suite
   - git clone https://github.com/ruby/mspec
   - git clone https://github.com/ruby/spec
-  - ruby -C spec ../mspec/bin/mspec -j --exclude "BasicObject#instance_eval evaluates string with given filename and negative linenumber"
+  - ridk exec ruby -C spec ../mspec/bin/mspec -j --exclude "BasicObject#instance_eval evaluates string with given filename and negative linenumber"
 
   # Run upload to github only on tag builds
   - set DEPLOY_TAG=%APPVEYOR_REPO_TAG_NAME%
